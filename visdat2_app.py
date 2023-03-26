@@ -34,6 +34,7 @@ fig1 = px.scatter(df,
     size=option_size,
     color=option_color,
     size_max=bub,
-    hover_data=[option_size]
+    hover_data=[option_size],
+    marker_colorscale=px.colors.sequential.Viridis,
 )
 st.plotly_chart(fig1)
