@@ -4,7 +4,7 @@ import pandas as pd
 import math
 
 # Load data, define hover text and bubble size
-df = pd.read_excel('factbook.csv')
+df = pd.read_excel('factbook.xlsx')
 #df.head()
 
 hover_text = []
