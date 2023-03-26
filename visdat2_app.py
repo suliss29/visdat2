@@ -56,8 +56,6 @@ fig.update_layout(
     yaxis=dict(
         title='Life Expectancy',
         gridwidth=2,
-    ),
-    paper_bgcolor='rgb(243, 243, 243)',
-    plot_bgcolor='rgb(243, 243, 243)',
+    )
 )
 st.plotly_chart(fig)
