@@ -6,6 +6,7 @@ import pandas as pd
 
 
 with st.expander("Eksplorasi Data"):
+    st.snow()
     st.title('Configure Plot')
     st.header('Silahkan Eksplorasi')
     option_x = st.selectbox(
