@@ -50,13 +50,11 @@ fig.update_layout(
     title='Life Expectancy vs GDP per Capita',
     xaxis=dict(
         title='GDP per capita',
-        gridcolor='white',
         type='log',
         gridwidth=2,
     ),
     yaxis=dict(
         title='Life Expectancy',
-        gridcolor='white',
         gridwidth=2,
     ),
     paper_bgcolor='rgb(243, 243, 243)',
