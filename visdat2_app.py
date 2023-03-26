@@ -1,61 +1,39 @@
-import plotly.graph_objects as go
 import plotly.express as px
-import pandas as pd
-import math
 import streamlit as st
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+import pandas as pd
 
-# Load data, define hover text and bubble size
-df = pd.read_excel('factbook.xlsx')
-#df.head()
+st.title('Configure Plot')
+st.header('Silahkan Eksplorasi')
+option_x = st.selectbox(
+    '',
+    (' gdppercap ', '  Area ', ' birthrate ', '   Current account balance  ', '  Death rate ', '  Electricity consumption ', '   Electricity production  ', '   Exports  ', '   GDP  ', ' Country ', '  GDP real growth rate ', '   Highways  ', '   Imports  ', '  Industrial production growth rate ', '  Infant mortality rate ', '  Inflation rate  ', '   Internet users  ', '  Investment ', '   Labor force  ', ' lifeexpectatbirth ', '  Military expenditures ', '   Natural gas consumption  ', '   Oil consumption  ', ' population ', '  Public debt ', '  Railways ', '   Reserves of foreign exchange & gold  ', '  Total fertility rate ', '  Unemployment rate '))
+st.write('X :', option_x)
 
-hover_text = []
-bubble_size = []
+option_y = st.selectbox(
+    '',
+    (' lifeexpectatbirth ', '  Area ', ' birthrate ', '   Current account balance  ', '  Death rate ', '  Electricity consumption ', '   Electricity production  ', '   Exports  ', '   GDP  ', ' gdppercap ', '  GDP real growth rate ', '   Highways  ', '   Imports  ', '  Industrial production growth rate ', '  Infant mortality rate ', '  Inflation rate  ', '   Internet users  ', '  Investment ', '   Labor force  ', ' Country ', '  Military expenditures ', '   Natural gas consumption  ', '   Oil consumption  ', ' population ', '  Public debt ', '  Railways ', '   Reserves of foreign exchange & gold  ', '  Total fertility rate ', '  Unemployment rate '))
+st.write('Y :', option_y)
 
-for index, row in df.iterrows():
-    hover_text.append(('Country : {country}<br>'+
-                      'Continent : {continent}<br>'+
-                      'Life expectancy at birth: {lifeExp}<br>'+
-                      '  GDP per capita  : {gdp}<br>'+
-                      '  Population 	: {pop}').format(country=row['Country'],
-                                            continent=row['Continent'],
-                                            lifeExp=row['Life expectancy at birth'],
-                                            gdp=row['  GDP per capita '],
-                                            pop=row['  Population ']))
-    bubble_size.append(math.sqrt(row['  Population ']))
+option_size = st.selectbox(
+    '',
+    (' population ', '  Area ', ' birthrate ', '   Current account balance  ', '  Death rate ', '  Electricity consumption ', '   Electricity production  ', '   Exports  ', '   GDP  ', ' gdppercap ', '  GDP real growth rate ', '   Highways  ', '   Imports  ', '  Industrial production growth rate ', '  Infant mortality rate ', '  Inflation rate  ', '   Internet users  ', '  Investment ', '   Labor force  ', ' lifeexpectatbirth ', '  Military expenditures ', '   Natural gas consumption  ', '   Oil consumption  ', ' Country ', '  Public debt ', '  Railways ', '   Reserves of foreign exchange & gold  ', '  Total fertility rate ', '  Unemployment rate '))
+st.write('Size :', option_size)
 
-df['text'] = hover_text
-df['size'] = bubble_size
-sizeref = 2.*max(df['size'])/(7000)
+option_color = st.selectbox(
+    '',
+    (' birthrate ', '  Area ', ' Country ', '   Current account balance  ', '  Death rate ', '  Electricity consumption ', '   Electricity production  ', '   Exports  ', '   GDP  ', ' gdppercap ', '  GDP real growth rate ', '   Highways  ', '   Imports  ', '  Industrial production growth rate ', '  Infant mortality rate ', '  Inflation rate  ', '   Internet users  ', '  Investment ', '   Labor force  ', ' lifeexpectatbirth ', '  Military expenditures ', '   Natural gas consumption  ', '   Oil consumption  ', ' population ', '  Public debt ', '  Railways ', '   Reserves of foreign exchange & gold  ', '  Total fertility rate ', '  Unemployment rate '))
+st.write('Color :', option_color)
 
-# Dictionary with dataframes for each continent
-continent_names = ['Asia', 'Europe', 'North America', 'South America', 'Africa', 'Oceania']
-continent_data = {continent:df.query("Continent == '%s'" %continent)
-                              for continent in continent_names}
-
-# Create figure
-fig = go.Figure()
-
-for continent_name, continent in continent_data.items():
-    fig.add_trace(go.Scatter(
-        x=continent['  GDP per capita '], y=continent['Life expectancy at birth'],
-        name=continent_name, text=continent['text'],
-        marker_size=continent['size'],
-        ))
-
-# Tune marker appearance and layout
-fig.update_traces(mode='markers', marker=dict(sizemode='area',
-                                              sizeref=sizeref, line_width=2))
-
-fig.update_layout(
-    title='Life Expectancy vs GDP per Capita',
-    xaxis=dict(
-        title='GDP per capita',
-        type='log',
-        gridwidth=2,
-    ),
-    yaxis=dict(
-        title='Life Expectancy',
-        gridwidth=2,
-    )
+bub = st.slider('Ukuran Bubble', 1, 100, 60)
+df = pd.read_csv('data.csv')
+fig1 = px.scatter(df,
+    x=option_x,
+    y=option_y,
+    size=option_size,
+    color=option_color,
+    size_max=bub,
+    hover_data=[option_size]
 )
-st.plotly_chart(fig, use_container_width=True,theme="streamlit")
+st.plotly_chart(fig1)
