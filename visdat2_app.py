@@ -1,19 +1,22 @@
-total_points = st.slider("Number of points in spiral", 1, 5000, 2000)
-num_turns = st.slider("Number of turns in spiral", 1, 100, 9)
+import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
 
-Point = namedtuple('Point', 'x y')
-data = []
+# membaca file csv
+data = pd.read_csv('factbook.csv')
 
-points_per_turn = total_points / num_turns
+# menampilkan judul aplikasi
+st.title('Visualisasi Data')
 
-for curr_point_num in range(total_points):
-    curr_turn, i = divmod(curr_point_num, points_per_turn)
-    angle = (curr_turn + 1) * 2 * math.pi * i / points_per_turn
-    radius = curr_point_num / total_points
-    x = radius * math.cos(angle)
-    y = radius * math.sin(angle)
-    data.append(Point(x, y))
+# menampilkan dataframe
+st.write(data)
 
-st.altair_chart(alt.Chart(pd.DataFrame(data), height=500, width=500)
-    .mark_circle(color='#0068c9', opacity=0.5)
-    .encode(x='x:Q', y='y:Q'))
+# membuat histogram
+st.subheader('Histogram')
+plt.hist(data['Area'], bins=range(min(data['Birth rate']), max(data['Death rate']) + 1, 10))
+st.pyplot()
+
+# membuat scatter plot
+st.subheader('Scatter Plot')
+plt.scatter(data['Area'], data['Birth rate'])
+st.pyplot()
