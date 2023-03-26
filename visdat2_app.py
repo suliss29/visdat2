@@ -58,4 +58,4 @@ fig.update_layout(
         gridwidth=2,
     )
 )
-st.plotly_chart(fig)
+st.plotly_chart(fig, use_container_width=True,theme="streamlit")
